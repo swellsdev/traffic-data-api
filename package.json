@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/swellsdev/traffic-data-api",
   "dependencies": {
-    "express": "^4.12.2"
+    "express": "^4.12.2",
+    "mongoose": "^3.8.24"
   }
 }
