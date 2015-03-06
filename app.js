@@ -1,7 +1,7 @@
-var config  = require('./config');
-var express = require('express');
+var config  = require('./config')
+var express = require('express')
 
-var app = express();
+var app = express()
 
 app.set('port', config.port);
 

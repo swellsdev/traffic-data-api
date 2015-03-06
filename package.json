@@ -1,0 +1,25 @@
+{
+  "name": "traffic-data-api",
+  "version": "1.0.0",
+  "description": "Web Service for traffic data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swellsdev/traffic-data-api.git"
+  },
+  "keywords": [
+    "traffic"
+  ],
+  "author": "swellsdev",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/swellsdev/traffic-data-api/issues"
+  },
+  "homepage": "https://github.com/swellsdev/traffic-data-api",
+  "dependencies": {
+    "express": "^4.12.2"
+  }
+}
