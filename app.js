@@ -45,7 +45,12 @@ function GetLocations(db,callback){
 
 function GetLocationCSV(surveyID,db){
 	var collection = db.collection('data');
-	collection.findOne({"NB_LOCATION_TRAFFIC_SURVEY":surveyID},{"NB_LOCATION_TRAFFIC_SURVEY":true,"NB_GPS_LATITUDE":true,"NB_GPS_LONGITUDE":true,"_id":0},function(err,item){
+	collection.findOne({"NB_LOCATION_TRAFFIC_SURVEY":surveyID},{
+		"NB_LOCATION_TRAFFIC_SURVEY":true,
+		"NB_GPS_LATITUDE":true,
+		"NB_GPS_LONGITUDE":true,
+		"_id":false
+	},function(err,item){
 		console.log(item.NB_LOCATION_TRAFFIC_SURVEY+","
 			+item.NB_GPS_LATITUDE+","
 			+item.NB_GPS_LONGITUDE);
