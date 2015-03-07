@@ -16,7 +16,7 @@ MongoClient.connect(mongoURI, function(err, db) {
   	console.log(db.databaseName);
   	GetLocations(db, function(result){
   		locations = result;
-  		//db.close();
+  		db.close();
   	});
 });
 
@@ -33,7 +33,7 @@ app.get('/locations', function (req, res) {
 var server = app.listen(config.port, function () {
   var host = server.address().address;
   var port = server.address().port;
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('Traffic service listening at http://%s:%s', host, port);
 });
 
 function GetLocations(db,callback){
@@ -45,7 +45,7 @@ function GetLocations(db,callback){
 
 function GetLocationCSV(surveyID,db){
 	var collection = db.collection('data');
-	collection.findOne({"NB_LOCATION_TRAFFIC_SURVEY":surveyID},{"NB_LOCATION_TRAFFIC_SURVEY":true,"NB_GPS_LATITUDE":true,"NB_GPS_LONGITUDE":true},function(err,item){
+	collection.findOne({"NB_LOCATION_TRAFFIC_SURVEY":surveyID},{"NB_LOCATION_TRAFFIC_SURVEY":true,"NB_GPS_LATITUDE":true,"NB_GPS_LONGITUDE":true,"_id":0},function(err,item){
 		console.log(item.NB_LOCATION_TRAFFIC_SURVEY+","
 			+item.NB_GPS_LATITUDE+","
 			+item.NB_GPS_LONGITUDE);
