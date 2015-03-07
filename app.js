@@ -38,21 +38,12 @@ var server = app.listen(config.port, function () {
 
 function GetLocations(db,callback){
 	var collection = db.collection('locations');
-	collection.find({}).toArray(function(err,result){
-		callback(result);
-	});
-}
-
-function GetLocationCSV(surveyID,db){
-	var collection = db.collection('data');
-	collection.findOne({"NB_LOCATION_TRAFFIC_SURVEY":surveyID},{
-		"NB_LOCATION_TRAFFIC_SURVEY":true,
-		"NB_GPS_LATITUDE":true,
-		"NB_GPS_LONGITUDE":true,
+	collection.find({},{
+		"ID":true,
+		"LAT":true,
+		"LONG":true,
 		"_id":false
-	},function(err,item){
-		console.log(item.NB_LOCATION_TRAFFIC_SURVEY+","
-			+item.NB_GPS_LATITUDE+","
-			+item.NB_GPS_LONGITUDE);
+	}).toArray(function(err,result){
+		callback(result);
 	});
 }
