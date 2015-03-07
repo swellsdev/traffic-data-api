@@ -27,9 +27,14 @@ app.get('/', function (req, res) {
   	res.send('Service OK');
 });
 
-// get locations
+// get full list of locations
 app.get('/locations', function (req, res) {
   res.send({data:locations});
+});
+
+// get locations near a point
+app.get('/locationsNear', function (req, res) {
+  res.send({data:[req.LAT,req.LONG]});
 });
 
 var server = app.listen(config.port, function () {
