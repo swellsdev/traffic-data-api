@@ -34,7 +34,7 @@ app.get('/locations', function (req, res) {
 
 // get locations near a point
 app.get('/locationsNear', function (req, res) {
-  res.send({data:[req.LAT,req.LONG]});
+  res.send({data:[req.query.LAT,req.query.LONG]});
 });
 
 var server = app.listen(config.port, function () {
