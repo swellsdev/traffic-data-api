@@ -2,9 +2,9 @@ var config  = require('./config')
 var express = require('express')
 var mongo = require('mongodb')
 var monk = require('monk')
-var cors = require('cors') 
+var cors = require('cors')
 var app = express()
-
+app.use(cors())
 app.set('port', config.port);
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
