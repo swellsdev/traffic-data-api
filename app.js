@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 // get locations
 app.get('/locations', function (req, res) {
-  res.send(locations);
+  res.send({data:locations});
 });
 
 var server = app.listen(config.port, function () {
