@@ -11,5 +11,4 @@ function loadEnv(key) {
 module.exports = {
   username:      loadEnv('MONGO_USERNAME'),
   password:      loadEnv('MONGO_PASSWORD'),
-  port:          loadEnv('PORT')
 }
