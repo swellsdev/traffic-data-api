@@ -19,14 +19,14 @@ var MongoClient = require('mongodb').MongoClient
 
 var mongoURI = "mongodb://"+config.username+":"+config.password
 	+"@ds051851.mongolab.com:51851/vicroads-segment-speed";
-
+var mongoDB;
 MongoClient.connect(mongoURI, function(err, db) {
   	assert.equal(null, err);
   	console.log("Connected correctly to server");
   	console.log(db.databaseName);
   	GetLocations(db, function(result){
   		locations = result;
-  		db.close();
+  		mongoDB = db;
   	});
 });
 
@@ -40,6 +40,11 @@ app.get('/locations', function (req, res) {
   res.send({data:locations});
 });
 
+// get data for a single survey
+app.get('/surveyData', function (req, res) {
+  res.send({});
+});
+
 // get locations near a point
 app.post('/dataFromLocations', function (req, res) {
   var mongoURI = "mongodb://"+config.username+":"+config.password
@@ -47,7 +52,6 @@ app.post('/dataFromLocations', function (req, res) {
   var locationsRequested = req.body.locations;
   MongoClient.connect(mongoURI, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected correctly to server for locations");
     GetDataFromLocations(db,locationsRequested,function(result){
       res.send(result);
       db.close();
@@ -90,11 +94,45 @@ function GetDataFromLocations(db,locationsRequested,callback){
     .toArray(function(err,result){
       if(err)
         console.log(err);
-      console.log(result);
-      callback(result);
+      GetDataFromLocationID(db,result,callback);
   });
 }
 
 function GetDataFromLocationID(db,locationIDs,callback){
+  //convert ID field name
+  var array = [];
+  for(i=0;i<locationIDs.length;i++){
+    var obj = {};
+    obj["NB_LOCATION_TRAFFIC_SURVEY"] = locationIDs[i].ID;
+    array.push(obj);
+  }
 
+  var collection = db.collection('data');
+  collection.aggregate(
+    {
+      $match:{"$or":array}
+    },
+    {
+      $group:{ 
+        _id : {
+          NB_LOCATION_TRAFFIC_SURVEY:"$NB_LOCATION_TRAFFIC_SURVEY",
+          NB_TRAFFIC_SURVEY:"$NB_TRAFFIC_SURVEY",
+          DS_HOMOGENEOUS_FLOW:"$DS_HOMOGENEOUS_FLOW"
+        }
+      }
+    },
+    function(err,result){
+      if(err)
+        console.log(err);
+      callback(result);
+    }
+  );
+  /*
+  collection.find({"$or":array})
+    .toArray(function(err,result){
+      if(err)
+        console.log(err);
+      console.log(result);
+      callback(result);
+  });*/
 }
