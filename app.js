@@ -40,25 +40,23 @@ app.get('/locations', function (req, res) {
   res.send({data:locations});
 });
 
-// get data for a single survey
+// get all data for a single survey
 app.get('/surveyData', function (req, res) {
-  res.send({});
+  var surveyID = req.query.ID;
+  GetAllDataFromSurveyID(mongoDB,surveyID,function(result){
+    res.send(result);
+  });
 });
 
 // get locations near a point
 app.post('/dataFromLocations', function (req, res) {
-  var mongoURI = "mongodb://"+config.username+":"+config.password
-  +"@ds051851.mongolab.com:51851/vicroads-segment-speed";
   var locationsRequested = req.body.locations;
-  MongoClient.connect(mongoURI, function(err, db) {
-    assert.equal(null, err);
-    GetDataFromLocations(db,locationsRequested,function(result){
+    GetDataFromLocations(mongoDB,locationsRequested,function(result){
       res.send(result);
-      db.close();
     });
-  });  
 });
 
+// start server listening
 var server = app.listen(5000, function () {
   var host = server.address().address;
   var port = 5000;
@@ -127,12 +125,14 @@ function GetDataFromLocationID(db,locationIDs,callback){
       callback(result);
     }
   );
-  /*
-  collection.find({"$or":array})
+}
+
+function GetAllDataFromSurveyID(db,surveyID,callback){
+  var collection = db.collection('data');
+  collection.find({"NB_LOCATION_TRAFFIC_SURVEY":Number(surveyID)})
     .toArray(function(err,result){
       if(err)
         console.log(err);
-      console.log(result);
       callback(result);
-  });*/
+  });
 }
